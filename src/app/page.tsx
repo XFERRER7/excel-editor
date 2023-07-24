@@ -47,14 +47,11 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-800 flex flex-col gap-5 justify-center items-center 
-    text-white p-5">
+    <div className="min-h-screen bg-zinc-100 flex flex-col gap-5 justify-center items-center 
+    text-zinc-800 p-5">
 
-      <TypographyH1>
-        Web Excel editor
-      </TypographyH1>
 
-      <div className="min-w-[40rem] px-8 rounded-lg">
+      <div className="min-w-[40rem] max-w-[90%] px-8 rounded-lg">
         {
           !fileSelected ? (
             <>

@@ -39,12 +39,12 @@ export const AddItemSheet = ({ children, inputs, setCreatedItemData }: IEditShee
     <Sheet>
       {children}
       <SheetContent
-        className="min-w-[400px] bg-zinc-900 text-white border-l border-zinc-900"
+        className="min-w-[400px] bg-zinc-200 text-zinc-700 border-l border-0"
       >
         <SheetHeader>
-          <SheetTitle className="text-white">Adicione um novo dado</SheetTitle>
-          <SheetDescription className="text-zinc-300">
-            Adicione um novo item para sua lista de dados
+          <SheetTitle className="text-zinc-700">Adicione um novo dado</SheetTitle>
+          <SheetDescription className="text-zinc-500">
+            Crie um novo item para sua lista de dados
           </SheetDescription>
         </SheetHeader>
         <div className="grid gap-4 py-4">
@@ -71,7 +71,8 @@ export const AddItemSheet = ({ children, inputs, setCreatedItemData }: IEditShee
         </div>
         <SheetFooter>
           <SheetClose asChild>
-            <Button variant='secondary' type="submit"
+            <Button 
+            className="bg-blue-600"
               onClick={() => saveData()}
             >Adicionar</Button>
           </SheetClose>

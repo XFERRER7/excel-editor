@@ -9,6 +9,8 @@ import { Button } from "./ui/button"
 import { SheetTrigger } from "./ui/sheet"
 import { toast } from "react-toastify"
 import { AddItemSheet } from "./AddItemSheet"
+import { Input } from "./ui/input"
+import { Search } from "lucide-react"
 
 export interface UnknownObject {
   [key: string]: any
@@ -70,12 +72,32 @@ export const BoardActions = ({ data, setData, finished, setFinished }: IBoardAct
 
 
   return (
-    <div className="flex flex-col justify-center items-center space-y-10">
-      <Table>
+    <div className="flex flex-col justify-center items-center space-y-10 mt-10">
+      <div className="flex w-full items-center justify-between">
+        <div className="relative w-96">
+        <div
+          className="absolute top-0 right-0 h-full flex items-center pr-3 pointer-events-none"
+        >
+            <Search size={18} color='#4b5563'/>
+          </div>
+          <Input
+            type="text"
+            placeholder="Search"
+            className="pr-10 h-11 border-zinc-300 focus-visible:ring-0"
+          />
+        </div>
+        <Button
+          className="bg-blue-600 hover:bg-blue-500"
+          onClick={() => setFinished(true)}
+        >
+          Confirmar alterações
+        </Button>
+      </div>
+      <Table className="bg-white">
         <TableHeader>
           <TableRow>
             {headers.map((header) => (
-              <TableHead key={header}>{header}</TableHead>
+              <TableHead className="font-bold" key={header}>{header}</TableHead>
             ))}
           </TableRow>
         </TableHeader>
@@ -83,8 +105,8 @@ export const BoardActions = ({ data, setData, finished, setFinished }: IBoardAct
           {data.map((item, index) => (
             <TableRow
               key={index}
-              className={`cursor-pointer hover:opacity-80
-              ${Object.keys(editData).length !== 0 && editData === item ? 'bg-zinc-100 text-zinc-900' : ''}
+              className={`cursor-pointer hover:bg-zinc-200
+              ${Object.keys(editData).length !== 0 && editData === item ? 'bg-zinc-300 text-zinc-700 hover:bg-zinc-300' : ''}
               `}
               onClick={() => {
                 if (selectedItemIndex == index) {
@@ -112,50 +134,43 @@ export const BoardActions = ({ data, setData, finished, setFinished }: IBoardAct
         !finished && (
           <div className="flex w-full justify-between">
 
-          <DeleteDialog setConfirmDelete={setConfirmDelete}>
-            <DialogTrigger asChild>
-              <Button 
-              variant='destructive' 
-              disabled={selectedItemIndex === null}
-              >
-                Excluir</Button>
-            </DialogTrigger>
-          </DeleteDialog>
-  
-          <EditSheet
-            inputs={headers}
-            values={
-              Object.keys(editData).length === 0 ? headers.map(() => '') : Object.values(editData)
-            }
-            setEditData={setEditData}
-          >
-            <SheetTrigger asChild>
-              <Button 
-              variant='secondary'
-              disabled={selectedItemIndex === null}
-              >Editar</Button>
-            </SheetTrigger>
-          </EditSheet>
-          
-          <AddItemSheet
-            inputs={headers}
-            setCreatedItemData={setCreatedItemData}
-          >
-            <SheetTrigger asChild>
-              <Button 
-              className="bg-green-600 hover:bg-green-500"
-              >Adicionar</Button>
-            </SheetTrigger>
-          </AddItemSheet>
-  
-          <Button
-            className="bg-blue-600 hover:bg-blue-500"
-            onClick={() => setFinished(true)}
-          >
-            Confirmar alterações
-          </Button>
-  
-        </div>
+            <DeleteDialog setConfirmDelete={setConfirmDelete}>
+              <DialogTrigger asChild>
+                <Button
+                  variant='destructive'
+                  disabled={selectedItemIndex === null}
+                >
+                  Excluir</Button>
+              </DialogTrigger>
+            </DeleteDialog>
+
+            <EditSheet
+              inputs={headers}
+              values={
+                Object.keys(editData).length === 0 ? headers.map(() => '') : Object.values(editData)
+              }
+              setEditData={setEditData}
+            >
+              <SheetTrigger asChild className="">
+                <Button
+                  className="bg-zinc-500"
+                  disabled={selectedItemIndex === null}
+                >Editar</Button>
+              </SheetTrigger>
+            </EditSheet>
+
+            <AddItemSheet
+              inputs={headers}
+              setCreatedItemData={setCreatedItemData}
+            >
+              <SheetTrigger asChild>
+                <Button
+                  className="bg-green-600 hover:bg-green-500"
+                >Adicionar</Button>
+              </SheetTrigger>
+            </AddItemSheet>
+
+          </div>
         )
       }
 

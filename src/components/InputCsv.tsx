@@ -42,8 +42,8 @@ export const InputCsv = ({ fileSelected, setFileSelected, readData }: IInputCsvP
           borderRadius: '0.5rem',
         }}
         className={`flex flex-col items-center justify-center w-full h-64 border-2 
-              border-zinc-700 border-dashed cursor-pointer
-             ${fileSelected === true ? 'bg-zinc-600' : 'bg-zinc-700'}`}
+              border-zinc-200 border-dashed cursor-pointer
+             ${fileSelected === true ? 'bg-green-100' : 'bg-white'}`}
         onDragOver={handleDragOver}
         onDragEnter={handleDragEnter}
         onDrop={handleDrop}
