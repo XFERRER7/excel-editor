@@ -31,7 +31,6 @@ export const BoardActions = ({ data, setData, finished, setFinished }: IBoardAct
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [createdItemData, setCreatedItemData] = useState<UnknownObject>({})
 
-
   let headers: string[] = []
 
   useEffect(() => {
@@ -70,15 +69,42 @@ export const BoardActions = ({ data, setData, finished, setFinished }: IBoardAct
     headers = Object.keys(data[0])
   }
 
+  function isValidNumber(data: string): boolean {
+    const formattedPhone = data?.replace(/\D/g, '')
+    return formattedPhone?.length === 11 || formattedPhone?.length === 12
+  }
+
+  function sendToWhatsapp(data: string) {
+    const formattedPhone = '+55' + data.replace(/\D/g, '')
+
+    if (formattedPhone.length !== 13 && formattedPhone.length !== 14) {
+      alert('Número inválido. Deve conter 11 dígitos (sem o DDD) ou 12 dígitos (com o DDD).')
+      return
+    }
+
+    const message = `Olá! Aqui é a Ana Jhulia, secretária da Dra. Marília Garrote, pneumologista pediátrica.
+    Estamos entrando em contato para saber notícias de quem aí está sob nossos cuidados
+
+    Percebemos que já faz mais de um ano desde a última consulta, e gostaríamos de oferecer a possibilidade de agendar um novo acompanhamento.
+
+    O retorno regular, a cada 3 meses, é fundamental para garantir um crescimento saudável, sem cansaço ou tosse, e para que cada momento de brincar seja vivido com qualidade de vida!
+
+    Se precisar, estamos à disposição para verificar o melhor dia e horário para o atendimento.`;
+
+    // Codificar para URL
+    const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`;
+    const otherUrl = `whatsapp://send?phone=${formattedPhone}&text=${encodeURIComponent(message)}`;
+    window.open(otherUrl, '_blank');
+  }
 
   return (
     <div className="flex flex-col justify-center items-center space-y-10 mt-10">
       <div className="flex w-full items-center justify-between">
         <div className="relative w-96">
-        <div
-          className="absolute top-0 right-0 h-full flex items-center pr-3 pointer-events-none"
-        >
-            <Search size={18} color='#4b5563'/>
+          <div
+            className="absolute top-0 right-0 h-full flex items-center pr-3 pointer-events-none"
+          >
+            <Search size={18} color='#4b5563' />
           </div>
           <Input
             type="text"
@@ -93,6 +119,8 @@ export const BoardActions = ({ data, setData, finished, setFinished }: IBoardAct
           Confirmar alterações
         </Button>
       </div>
+
+
       <Table className="bg-white">
         <TableHeader>
           <TableRow>
@@ -101,6 +129,7 @@ export const BoardActions = ({ data, setData, finished, setFinished }: IBoardAct
             ))}
           </TableRow>
         </TableHeader>
+
         <TableBody>
           {data.map((item, index) => (
             <TableRow
@@ -122,11 +151,26 @@ export const BoardActions = ({ data, setData, finished, setFinished }: IBoardAct
                 <TableCell
                   className="font-medium"
                   key={header}
-                >{item[header]}</TableCell>
+                >
+                  {
+                    isValidNumber(item[header]) ? (
+                      <span className="text-blue-600 cursor-pointer ml-2"
+                        onClick={() => sendToWhatsapp(item[header])}
+                      >
+                        {item[header]}
+                      </span>
+                    )
+                      :
+                      <>
+                        {item[header]}
+                      </>
+                  }
+                </TableCell>
               ))}
             </TableRow>
           ))}
         </TableBody>
+
       </Table>
 
 
